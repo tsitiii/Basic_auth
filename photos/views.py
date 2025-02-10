@@ -13,7 +13,7 @@ def index(request):
 
 def home(request):
     photos = Library.objects.all()
-    return render(request, 'photo/home.html',context= {"photo":photos})
+    return render(request, 'photo/home.html')
 
 class ImageViewSet(ModelViewSet):
     queryset = Library.objects.all()

@@ -32,13 +32,31 @@
 </head>
 <body>
     <h1>Image Gallery</h1>
-    <div class="gallery">
-        {% for pic in photos %}
-        <div class="gallery-item">
-            <h2>{{ pic.title }}</h2>
-            <img src="{{ pic.image.url }}" alt="{{ pic.title }}">
-        </div>
-        {% endfor %}
-    </div>
+    <div class="gallery" id="gallery"></div>
+
+    <script>
+        async function fetchImages() {
+            try {
+                const cloudinaryBaseUrl = 'https://res.cloudinary.com/dolvppffs/';
+                const response = await fetch('http://127.0.0.1:8000/images/'); 
+                const data = await response.json();
+                const gallery = document.getElementById('gallery');
+                gallery.innerHTML = ''; 
+                data.forEach(pic => {
+                    const item = document.createElement('div');
+                    item.className = 'gallery-item';
+                    item.innerHTML = `
+                        <h2>${pic.title}</h2>
+                        <img src="${cloudinaryBaseUrl}${pic.image}" alt="${pic.title}">
+                        <h3>${pic.description}</h3>
+                    `;
+                    gallery.appendChild(item);
+                });
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        }
+        window.onload = fetchImages;
+    </script>
 </body>
 </html>
